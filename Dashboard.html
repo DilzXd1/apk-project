@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GetsuzoXRat - Dashboard</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; background: #0d0f12; color: white; }
+        .header { background: #161b22; display: flex; justify-content: space-between; padding: 15px; align-items: center; border-bottom: 1px solid #30363d; }
+        .logo-center { font-size: 20px; font-weight: bold; color: #fff; text-shadow: 0 0 10px #00ff66; text-align: center; width: 100%; }
+        .indicator { width: 12px; height: 12px; border-radius: 50%; background: #00ff66; box-shadow: 0 0 10px #00ff66; }
+        .profile-sec { display: flex; align-items: center; padding: 15px; background: rgba(255,255,255,0.02); margin: 15px; border-radius: 10px; }
+        .avatar { width: 45px; height: 45px; border-radius: 50%; background: #00ff66; border: 2px solid #fff; margin-right: 15px; }
+        .banner { margin: 15px; border-radius: 12px; overflow: hidden; height: 160px; }
+        .banner video { width: 100%; height: 100%; object-fit: cover; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 15px; }
+        .info-card { background: #161b22; padding: 15px; border-radius: 10px; text-align: center; box-shadow: inset 0 2px 5px rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div style="cursor:pointer; font-size: 20px;">&#9776;</div>
+        <div class="logo-center">GetsuzoXRat</div>
+        <div class="indicator"></div>
+    </div>
+
+    <div class="profile-sec">
+        <div class="avatar"></div>
+        <div>
+            <h4 id="u-name" style="margin:0;">User</h4>
+            <span id="u-role" style="font-size:12px; color:#8b949e;">Role: </span>
+        </div>
+    </div>
+
+    <div class="banner">
+        <video autoplay loop muted playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-abstract-laser-lights-background-41764-large.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-card">
+            <div style="color:#25D366; font-size: 20px; font-weight: bold;">WA</div>
+            <div id="brp-count" style="font-size:18px; font-weight:bold; margin-top:5px;">0 Active</div>
+        </div>
+        <div class="info-card">
+            <div style="color:#00bcff; font-size: 20px;">👤</div>
+            <div id="usr-count" style="font-size:18px; font-weight:bold; margin-top:5px;">0 Total</div>
+        </div>
+    </div>
+
+    <script>
+        const session = JSON.parse(localStorage.getItem('user'));
+        if(!session) window.location.href = '/';
+        document.getElementById('u-name').innerText = session.username;
+        document.getElementById('u-role').innerText = `Role: [ ${session.role.toUpperCase()} ]`;
+
+        // Fetch counter data
+        fetch('/api/dashboard-info')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('brp-count').innerText = `${data.senderCount} Active`;
+                document.getElementById('usr-count').innerText = `${data.totalUsers} Total`;
+            });
+    </script>
+</body>
+</html>
